@@ -41,7 +41,7 @@ The microcontroller detects acceleration based motions that are performed by the
 
 The video shows 3 motion sequences that are correctly identified on the console output.
 
-https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/c7c6986f-58ae-42ca-b383-463416b7fff2
+https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/6196c86b-e821-4e2e-ba81-7fecbd6684d5
 
 ## Using the Device
 
@@ -106,7 +106,7 @@ In comparison, the flip motion has an inverse feedback of ~1x magnitude. This is
 
 The following image shows an up motion followed by a flip spike.
 
-![](assets/flip_motion_detection.png)
+![](s/flip_motion_detection.png)
 
 ### Sensor Decoupling
 
@@ -171,7 +171,7 @@ After a motion spike, the algorithm ignores subsequent data points related to th
 
 This buffer region was determined based on the average time period of a motion spike. At 10 Hz polling rate, the average number of decelleration data points was 2. This meant that after detecting acceleration we could ignore the following two data points.
 
-![](assets/buffer_motion_detection.png)
+![](s/buffer_motion_detection.png)
 #### Sensitivity
 
 Sensitivity is the threshold for defining what is considered a positive or negative spikes. Anything below the sensitivity would be noise or small movements.
@@ -249,7 +249,7 @@ Learn more about sensor calibration and how the process actually works. My solut
 
 This is a video of the Sharper Image Stunt Drone controlled by the consumer remote that it comes with.
 
-https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/24d19c9d-cb06-4ab9-9a1b-9d6c133dc371
+https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/3d2384f5-f8b5-4ede-9343-e7d543fbca50
 
 The ongoing goal of this project is to integrate the motion detection algorithms with a biosensor controlled drone. Let's break that down:
 - The drone's flight directions are controlled by the remote
@@ -267,7 +267,7 @@ Electromyography (EMG) signals are used to control the elevation of the drone. T
 
 This is a video showing the EMG sensor output when flexing a bicep.
 
-https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/641ad051-2f76-4bc6-b879-2b63d9851dc7
+https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/852f0e19-22c9-463c-82f3-560e6f2fb877
 
 ### Sensor Pad Placement
 
