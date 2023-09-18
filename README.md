@@ -4,6 +4,39 @@ A spike detection and recording system using an Adafruit LSM6DS33 interntial mea
 
 The microcontroller detects acceleration based motions that are performed by the Sharper Image Stunt Drone: up, down, left right, forward, back, flip.
 
+- [Drone Motion Detector](#drone-motion-detector)
+  - [Demo](#demo)
+  - [Using the Device](#using-the-device)
+  - [Motion Detection](#motion-detection)
+    - [Data Sequence](#data-sequence)
+    - [Detecting X/Y/Z Motion](#detecting-xyz-motion)
+    - [Detecting Flips](#detecting-flips)
+      - [Alternative Solution to Detect Flips](#alternative-solution-to-detect-flips)
+    - [Sensor Decoupling](#sensor-decoupling)
+      - [Original Solution: Precedence Filtering](#original-solution-precedence-filtering)
+      - [Better Solution: Local Maxima + Precedence](#better-solution-local-maxima--precedence)
+    - [Calibrating Sensor Constants](#calibrating-sensor-constants)
+      - [Buffer](#buffer)
+      - [Sensitivity](#sensitivity)
+      - [Data Rate](#data-rate)
+        - [Cause of Throughput Constraint](#cause-of-throughput-constraint)
+        - [Solution to Faster Throughput](#solution-to-faster-throughput)
+    - [Future Improvements](#future-improvements)
+      - [Extendability of Motion Detection](#extendability-of-motion-detection)
+      - [Modifiable Sensor Calibration Code](#modifiable-sensor-calibration-code)
+      - [Finding the Memory Overflow Point](#finding-the-memory-overflow-point)
+      - [Use External Libraries](#use-external-libraries)
+      - [Improved Sensor Calibration](#improved-sensor-calibration)
+- [Drone Integration](#drone-integration)
+  - [EMG Sensor Integration](#emg-sensor-integration)
+    - [Sensor Pad Placement](#sensor-pad-placement)
+  - [Drone Controller Rework](#drone-controller-rework)
+- [Appendix](#appendix)
+  - [Drone Axes](#drone-axes)
+  - [MCU RAM Memory](#mcu-ram-memory)
+  - [MCU Memory Segments](#mcu-memory-segments)
+
+
 ## Demo
 
 The video shows 3 motion sequences that are correctly identified on the console output.
@@ -56,12 +89,12 @@ Since the spike detection for flipping and x/y/z motion is running on the same s
 
 Flips are detected using the sign of the Z axis measurement which inverts twice.
 
-**Insert image of a flip spike here**
-
 The algorithm is 3 steps:
 1. Check starting orientation
 2. Detect transition to inverse orientation
 3. Confirm return to original orientation
+
+![](assets/flip_data_points.png)
 
 #### Alternative Solution to Detect Flips
 
@@ -179,6 +212,38 @@ This solution would be used for polling rates in the 100 Hz and higher magnitude
 
 The current solution is sufficient for the purposes of testing the motion detection algorithms for short and long sequences. The overhead of setting up multithreading on the Raspberry Pico was not worth the development time for the current application.
 
+### Future Improvements
+
+#### Extendability of Motion Detection
+
+The current algorithm uses a precedence filter that differentiates flips and x/y/z motion. This works well because it catches all the current motion patterns. What if more types of motion or variations of motion were added to the detection algorithm?
+
+If something like diagonal motion needed to be detected, the current solution may require a complete rework. This is because the algorithms for motion detection are based on high level characteristics of motion patters, not detailed characteristics. For example, a flip is easily determined by checking that the sign in subsequent data points inverts. But if other motion patterns include sign flipping then the code would break.
+
+The solution would be to more strongly define the characteristics of each motion pattern and rework the algorithm from there. The current solution uses a buffer to ignore decelleration. However, that could be important data to distinguish motion patterns with more precision.
+
+#### Modifiable Sensor Calibration Code
+
+The current solution uses hardcoded calibration constants that are dependent on the polling rate of the algorithm. What if the polling rate changed? That would break the buffer feature and the constants used for parsing data structures. What if the sensor model changed? Then the threshold constants would need to be changed to new fixed values.
+
+This means that changing the sensors or use conditions would require modification of the application level code. A better solution would be to add an additional layer to the code that separated hardware and software. That layer would parameterize things like sensor model and spike threshold rather than using constants throughout the application code.
+
+This was not necessary for the project, but considering it wouldn't take much more effort, the up front cost would have been worth it. The main benefit would be more modifiable code and less time spent refactoring in the future.
+
+#### Finding the Memory Overflow Point
+
+Currently, the time before overflowing the MCU RAM was determined by running the program until it broke. What if we wanted to calculate when the memory would overflow instead? The solution would be to use a debugger to determine see the stack pointer and check how much of the RAM was being used up. From there, the remaining RAM and data rate would be enough to find the time before overflow. Information on MCU memory region usage may also be available with build tools.
+
+Using a more accurate method of determining overflow makes the solution more reliable by getting a more precise time value. It is also an easily repeatable solution. What if the system overflowed after 5 days? That would go unnoticed or it would take a lot of effort to find.
+
+
+#### Use External Libraries
+
+Consider using more Python libraries for the algorithm portion of the code. This was not explored.
+
+#### Improved Sensor Calibration
+
+Learn more about sensor calibration and how the process actually works. My solution was something I came up with on my own to solve the problem. It would be beneficial to read some research about the domain.
 
 # Drone Integration
 
@@ -236,3 +301,11 @@ A section for general notes and lessons.
 The following diagram shows a plane to more clearly distinguish pitch and roll.
 
 ![Axes of a Plane](/assets/plane_axes.svg)
+
+## MCU RAM Memory
+
+Why do microcontrollers have such small RAM memory sizes? [Link](https://electronics.stackexchange.com/questions/134496/why-do-microcontrollers-have-so-little-ram)
+
+## MCU Memory Segments
+
+How does lower level system related data get stored on a microcontroller? [Link](https://electronics.stackexchange.com/questions/237740/what-resides-in-the-different-memory-types-of-a-microcontroller)
