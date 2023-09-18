@@ -35,6 +35,7 @@ The microcontroller detects acceleration based motions that are performed by the
   - [Drone Axes](#drone-axes)
   - [MCU RAM Memory](#mcu-ram-memory)
   - [MCU Memory Segments](#mcu-memory-segments)
+  - [Sensors](#sensors)
 
 
 ## Demo
@@ -309,3 +310,32 @@ Why do microcontrollers have such small RAM memory sizes? [Link](https://electro
 ## MCU Memory Segments
 
 How does lower level system related data get stored on a microcontroller? [Link](https://electronics.stackexchange.com/questions/237740/what-resides-in-the-different-memory-types-of-a-microcontroller)
+
+## Sensors
+
+IMUs and magnetometer for gyroscopic drift (temperature causing expand and contract, mechanical wear and tear or imperfections from manu, external magnetic fields
+- how accelerometer works
+- how gyroscope works
+
+
+sensor selctions
+- define what you need (actual application obvisouly)
+- define accuracy and sensitivity needed and physical characteristics (temperature tolerance)
+- active vs passive sensors (https://www.nasa.gov/directorates/heo/scan/communications/outreach/funfacts/txt_passive_active.html)
+- acquisition methods (SPI, I2C, etc) and timing requirements
+- size and footprint
+- power consumption
+- cost
+
+sensor Calibration
+- Calibrating your sensors is a crucial step for ensuring the quality and consistency of your process control system. Calibration is the process of adjusting the output of a sensor to match a known input or a reference value. Calibration can help you eliminate or reduce errors, drifts, biases, and noise in your sensor readings, as well as improve their repeatability and stability. You need to calibrate your sensors regularly, following the manufacturer's instructions and using appropriate equipment and methods.
+
+Analog front ends
+
+DAC's and ADC's
+
+Nyquist rate
+
+Filters
+
+Handling power consumption of sensors/peripheral devices
