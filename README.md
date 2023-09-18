@@ -8,7 +8,7 @@ The microcontroller detects acceleration based motions that are performed by the
 
 The video shows 3 motion sequences that are correctly identified on the console output.
 
-**Insert video here**
+https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/c7c6986f-58ae-42ca-b383-463416b7fff2
 
 ## Using the Device
 
@@ -47,6 +47,7 @@ A threshold based algorithm with a buffer to ignore acceleration feedback. There
 Think of the motion patterns of the drone in the video. Directional motion changes are indicated by a sharp acceleration followed by a decelleration. There are two spikes where the first represents the intended motion and the second is simply feedback.
 
 ![](assets/buffer_motion_detection.png)
+
 ### Detecting Flips
 
 A flip is when the drone does a 360 degree roation about the pitch or roll axis.
@@ -57,11 +58,10 @@ Flips are detected using the sign of the Z axis measurement which inverts twice.
 
 **Insert image of a flip spike here**
 
-The algorithm is 4 steps:
+The algorithm is 3 steps:
 1. Check starting orientation
 2. Detect transition to inverse orientation
 3. Confirm return to original orientation
-4. Buffer the subsequent data points
 
 #### Alternative Solution to Detect Flips
 
@@ -71,7 +71,7 @@ Motion in x/y/z has a ~2x inverse feedback. This is caused by decelleration. For
 
 In comparison, the flip motion has an inverse feedback of ~1x magnitude. This is not from decelleration but rather the Z axis sign flip. For example, a flip would show a Z axis reading from 9.8 m/s^2 to -9.8 m/s^2 to 9.8 m/s^2 where the inverse feedback magnitude is 20 m/s^2.
 
-The following image shows a z motion flip followed by a flip spike.
+The following image shows an up motion followed by a flip spike.
 
 ![](assets/flip_motion_detection.png)
 
@@ -184,7 +184,7 @@ The current solution is sufficient for the purposes of testing the motion detect
 
 This is a video of the Sharper Image Stunt Drone controlled by the consumer remote that it comes with.
 
-**Insert video**
+https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/24d19c9d-cb06-4ab9-9a1b-9d6c133dc371
 
 The ongoing goal of this project is to integrate the motion detection algorithms with a biosensor controlled drone. Let's break that down:
 - The drone's flight directions are controlled by the remote
@@ -202,7 +202,7 @@ Electromyography (EMG) signals are used to control the elevation of the drone. T
 
 This is a video showing the EMG sensor output when flexing a bicep.
 
-**Insert video here**
+https://github.com/MatthewChow03/drone-motion-detector/assets/74833839/641ad051-2f76-4bc6-b879-2b63d9851dc7
 
 ### Sensor Pad Placement
 
